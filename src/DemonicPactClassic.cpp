@@ -25,7 +25,7 @@ class spell_warl_demonic_pact_classic : public SpellScript
                     if (AuraEffect* aurEff = aur->GetEffect(0))
                     {
                         // do overwrite (do not remove target) if new DP is stronger or equal (refreshes duration)
-                        if (amount >= aurEff->GetAmount())
+                        if (amount >= aurEff->GetBaseAmount())
                         {
                             return false;
                         }
