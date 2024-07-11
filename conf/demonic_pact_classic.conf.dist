@@ -13,9 +13,9 @@
 #                     Please note that like all AzerothCore modules, database changes cannot be undone through config settings.
 #                     This means that world changes like updating internal cooldown of Demonic Pact will remain in place.
 #                     You may use the provided undo script (in optional/) to restore the ICD of Demonic Pact
-#                     Disabling the module will disable loading the spell script
-#        Default:     0 - Disabled
+#
+#        Default:     0 - Disabled (not implemented)
 #                     1 - Enabled
 #
 
-DemonicPactClassic.Enable = 1
+DemonicPactClassic.Enable = 1 # NOTIMPLEMENTED: changing this does nothing
