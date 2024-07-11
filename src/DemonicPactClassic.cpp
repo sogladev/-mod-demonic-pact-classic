@@ -19,7 +19,7 @@ class spell_warl_demonic_pact_classic : public SpellScript
         int32 amount = GetSpellValue()->EffectBasePoints[EFFECT_0];
         targets.remove_if([&](WorldObject const* target) -> bool
         {
-            if (Unit* unit = target->ToUnit())
+            if (const Unit* unit = target->ToUnit())
             {
                 if (Aura* aur = unit->GetAura(48090))
                 {
