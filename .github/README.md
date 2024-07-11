@@ -1,6 +1,40 @@
-# SKELETON - Module template
+# AzerothCore Module Demonic Pact Classic
 
-[English](README.md) | [Español](README_ES.md)
+- Latest build status with azerothcore:
+
+[![Build Status](
+https://github.com/sogladev/mod-demonic-pact-classic/actions/workflows/core-build.yml/badge.svg?branch=master&event=push)](https://github.com/sogladev/mod-demonic-pact-classic)
+
+This is a module for [AzerothCore](http://www.azerothcore.org) that changes Demonic Pact to behave more like Wrath Classic:
+
+- Lower ICD from 20 seconds to 5 seconds (adjustable)
+- No longer overwrites stronger Demonic Pact auras, unless the aura has less than 10 seconds remaining
+
+## How to install
+https://www.azerothcore.org/wiki/installing-a-module
+
+Requires source recompilation
+
+Apply database changes: `data/sql/db-world/base/demonic_pact_classic.sql`
+```
+-- reduce Internal Cooldown from 20 seconds (20000) to 5 seconds (5000), some sources say 1 second (1000)
+SET @ICD:=5000;
+UPDATE `spell_proc_event` SET `Cooldown`=@ICD WHERE `entry` IN (53646, 54909);
+DELETE FROM `spell_script_names` WHERE `spell_id` = 48090;
+INSERT INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (48090, 'spell_warl_demonic_pact_classic');
+```
+
+## How to remove
+
+1. Undo database changes: `optional/undo_demonic_pact_classic.sql`
+```
+-- restore Internal Cooldown to 20 seconds (20000)
+SET @ICD:=20000;
+UPDATE `spell_proc_event` SET `Cooldown`=@ICD WHERE `entry` IN (53646, 54909);
+DELETE FROM `spell_script_names` WHERE `spell_id` = 48090;
+```
+
+2. Remove `mod-demonic-pact-classic` folder
 
 
 ## How to create your own module
@@ -10,16 +44,3 @@
 1. Do not hesitate to compare with some of our newer/bigger/famous modules.
 1. Edit the `README.md` and other files (`include.sh` etc...) to fit your module. Note: the README is automatically created from `README_example.md` when you use the script `create_module.sh`.
 1. Publish your module to our [catalogue](https://github.com/azerothcore/modules-catalogue).
-
-
-## How to test your module?
-
-Disable PCH (precompiled headers) and try to compile. To disable PCH, set `-DNOPCH=1` with Cmake (more info [here](http://www.azerothcore.org/wiki/CMake-options)).
-
-If you forgot some headers, it is time to add them!
-
-## Licensing
-
-The default license of the skeleton-module template is the MIT but you can use a different license for your own modules.
-
-So modules can also be kept private. However, if you need to add new hooks to the core, as well as improving existing ones, you have to share your improvements because the main core is released under the AGPL license. Please [provide a PR](https://www.azerothcore.org/wiki/How-to-create-a-PR) if that is the case.
